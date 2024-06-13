@@ -4,7 +4,7 @@
       <el-upload
     class="upload-demo"
     drag
-    action="http://192.168.100.32:8095/upload"
+    action="http://112.124.49.204:8095/upload"
     multiple
     :on-success="onSuccess"
     :show-file-list="false"
@@ -21,9 +21,9 @@
     <el-main>
    
   <el-table :data="tableData" style="width: 100%" max-height="500" stripe="true">
-    <el-table-column prop="fileName" label="FileName" width="400" />
-    <el-table-column prop="filePath" label="FilePath" width="550" />
-    <el-table-column label="Operation" width="200">
+    <el-table-column prop="fileName" label="FileName" width=0.3*widght sortable/>
+    <el-table-column prop="filePath" label="FilePath" width=0.5*widght sortable />
+    <el-table-column label="Operation" width=0.2*widght>
       <template #default="scope">
         <el-button
           size="small"
@@ -98,26 +98,30 @@ const onExceed =async ()=>{
 
 
 //下载和删除文件
-const handleDownload =async (row:any)=>{
+const handleDownload = async (row: any) => {
   try {
-  const response = await axios.get(serverIp+'/download', {
+    const decodedFilePath = decodeURIComponent(row.filePath);
+    const response = await axios.get(serverIp + '/download', {
       params: {
-          filepath: row.filePath
+        filepath: decodedFilePath,
       },
-  });
-  console.log('aaaaa++'+response.data);
-  const url = window.URL.createObjectURL(new Blob([response.data]));
-  console.log('bbbb'+url);
-// 创建一个链接元素
-  const link = document.createElement('a');
-  link.href = url;
-  link.setAttribute('download', row.fileName);  // 设置下载文件的名称
-  // 触发点击链接操作
-  link.click();
-} catch (error) {
-  console.log('下载文件时出现错误：', error);
-}
-}
+      responseType: 'blob', // 指定响应类型为二进制数据
+    });
+
+    const url = window.URL.createObjectURL(response.data);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', row.fileName); // 设置下载文件的名称
+
+    // 触发点击链接操作
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.log('下载文件时出现错误：', error);
+  }
+};
 const handleDelete =async (row:any)=>{
       try {
       const response = await axios.get(serverIp+'/delete', {
@@ -136,6 +140,10 @@ showAll();
 </script>
 
 <style>
+.upload-demo {
+  margin: 0px 0px 10px 10px;
+  background-color: antiquewhite;
+}
 button {
       margin: 0px 10px 10px 0px;
       background-color: rgb(231, 228, 210);
