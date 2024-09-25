@@ -4,7 +4,7 @@
       <el-upload
     class="upload-demo"
     drag
-    action="http://112.124.49.204:8095/upload"
+    action="http://124.70.163.84:8095/upload"
     multiple
     :on-success="onSuccess"
     :show-file-list="false"

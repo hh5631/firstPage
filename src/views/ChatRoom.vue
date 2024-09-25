@@ -38,7 +38,7 @@ const uname_show:any = inject('uname_show')
 let socket:WebSocket;
 
 if(uname_show.value!='未登录'){
-  socket=new WebSocket('ws://112.124.49.204:8095/websocket/'+uname.value)
+  socket=new WebSocket('ws://124.70.163.84:8095/websocket/'+uname.value)
   socket.onopen = function(event:any) {
   console.log('WebSocket连接已建立');
 
