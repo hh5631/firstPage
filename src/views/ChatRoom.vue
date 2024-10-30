@@ -88,7 +88,7 @@ const sendMessage =async ()=>{
     return
   }
   socket.send(input.value);  
-  text.value += uname_show.value+' :    '+input.value+'\n'+'——————————————————————————————————————————————\n';
+  // text.value += uname_show.value+' :    '+input.value+'\n'+'——————————————————————————————————————————————\n';
   input.value='';   
 }
 
